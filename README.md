@@ -16,7 +16,7 @@ SSBD Ontology (OWL DL), exemplar instances and conversion scripts are released u
 | Item | URL / File |
 |------|------------|
 | Core ontology (OWL/RDF‑XML) | [`ontology/ssbd_core.owl`](ontology/ssbd_core.owl) |
-| All individuals (TTL) | [`instance/ssbd_biosamole.ttl etc.`](instance/ssbd_instances.ttl) |
+| All individuals (TTL) | [`instance/ssbd_biosamole.ttl etc.`](instance/ssbd_biosample.ttl) |
 | Integrated ontology (OWL/RDF/XML) | [`ontology/ssbd_integrated.owl`](ontology/ssbd_integrated.owl) |
 
 
