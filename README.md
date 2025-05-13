@@ -46,6 +46,28 @@ Seven core entities—Project, Dataset, Biosample, Imaging-Method, Instrument, D
 Project 199 (Ichimura): A single Dataset, its Biosample and the associated OME-Zarr metadata are connected via RO relations; external strain and organism terms are linked for immediate cross-repository interoperability.
 
 ### 1.3 Sample SPARQL query  
+```
+PREFIX ssbdont: <http://ssbd.riken.jp/ontology/>
+PREFIX obo:     <http://purl.obolibrary.org/obo/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?dataset ?title ?methodIRI ?label ?zarr ?vizarr
+WHERE {
+  ?bs ssbdont:is_about_strain <https://www.jax.org/strain/000664> .
+
+  ?dataset ssbdont:has_biosample_information ?bs ;
+           ssbdont:has_dataset_title         ?title ;
+           obo:RO_0002180                    ?ngff ;
+           ssbdont:has_imaging_method        ?mNode .
+
+  ?mNode ssbdont:is_about_imaging_method ?methodIRI .
+  OPTIONAL { ?methodIRI rdfs:label ?label }
+
+  OPTIONAL { ?ngff ssbdont:has_s3_endpoint ?zarr }
+  OPTIONAL { ?ngff ssbdont:has_vizarr_url  ?vizarr }
+}
+ORDER BY ?methodIRI ?dataset
+```
  [`sparql/`](sparql/strain2zarr.rq) |
  ![](img/fig4.png)
 
