@@ -23,7 +23,7 @@ SSBD Ontology (OWL DL), exemplar instances and conversion scripts are released u
 
 ### 1.1 Core layer:Seven key entity types
 
-![](img/fig1.png)
+![](img/fig1.svg)
 
 | Layer | Entity class | Typical properties | Linked external vocab |
 |-------|--------------|--------------------|-----------------------|
@@ -39,8 +39,8 @@ Seven core entities—Project, Dataset, Biosample, Imaging-Method, Instrument, D
 
 ### 1.2 Example instance relationships (Project 199 – AMATERAS brain‑slice)
 
-![](img/fig2.png)
-![](img/fig3.png)
+![](img/fig2.svf)
+
 
 *Project → Dataset → Biosample → OME‑Zarr* relations 
 Project 199 (Ichimura): A single Dataset, its Biosample and the associated OME-Zarr metadata are connected via RO relations; external strain and organism terms are linked for immediate cross-repository interoperability.
@@ -68,7 +68,6 @@ WHERE {
 }
 ORDER BY ?methodIRI ?dataset
 ```
- [`sparql/`](sparql/strain2zarr.rq) |
  ![](img/fig4.png)
 
 A single query retrieves all datasets of strain C57BL/6J together with imaging-method ID, OME-Zarr URLs and Vizarr viewer.
