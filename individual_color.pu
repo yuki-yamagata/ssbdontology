@@ -1,0 +1,36 @@
+    @startuml P199_ObjectGraph
+    title Project 199 lineage  ▸ Dataset ▸ Biosample ▸ NGFF
+    hide stereotype
+    skinparam dpi 150                      '高解像度
+
+    '── 個体ノード ────────────────────────────────
+    object "ssbd-project-199"               as P199 #ADD8E6
+    object "dataset-199-Fig2_BrainSliceRGB" as DS   #ADD8E6
+    object "biosample-199-Fig2_BrainSliceRGB" as BS #ADD8E6
+    object "ngff-199-Fig2_BrainSliceRGB"      as NG #FFFACD
+
+    '── 参照ノード（外部 OBO / Strain / Organism）────────
+    object "JAX:000664\n(C57BL/6J)"          as Strain #E6FFE6
+    object "Mus musculus\n(house mouse)"     as Mouse  #E6FFE6
+
+    '── リレーション ───────────────────────────────
+    P199  --> DS   : RO_0002234\n(has output)
+    DS    --> BS   : has_biosample_information
+    DS    --> NG   : RO_0002180\n(has co,ponent)
+    BS    --> Strain : is_about_strain
+    BS    --> Mouse  : is_about_organism
+
+    '── NGFF 属性メモ ─────────────────────────────
+    NG : has_s3_endpoint = https://...BrainSliceRGB.zarr
+    NG : has_vizarr_url = https://.../vizarr/?source=...
+
+    '── 凡例 ─────────────────────────────────────
+    legend right
+    <color:#ADD8E6>■</color> Project
+    <color:#ADD8E6>■</color> Dataset
+    <color:#ADD8E6>■</color> Biosample
+    <color:#FFFACD>■</color> NGFF metadata
+    <color:#E6FFE6>■</color> External biological concept
+    (RO_0002234 = has output, RO_0002180 = has component)
+    endlegend
+    @enduml
