@@ -11,19 +11,19 @@ SSBD Ontology (OWL DL), exemplar instances and conversion scripts are released u
 
 ---
 
-## 1. Ontology (EN)
+## 1. Ontology 
 
 | Item | URL / File |
 |------|------------|
 | Core ontology (OWL/RDF‑XML) | [`ontology/ssbd_core.owl`](ontology/ssbd_core.owl) |
-| All individuals (TTL) | [`data/ssbd_instances.ttl`](data/ssbd_instances.ttl) |
+| All individuals (TTL) | [`instance/ssbd_biosamole.ttl etc.`](instance/ssbd_instances.ttl) |
 | Integrated ontology (OWL/RDF/XML) | [`ontology/ssbd_integrated.owl`](ontology/ssbd_integrated.owl) |
 
 
 
 ### 1.1 Core layer:Seven key entity types
 
-![](img/P199_ObjectGraph.svg)
+![](img/fig1.svg)
 
 | Layer | Entity class | Typical properties | Linked external vocab |
 |-------|--------------|--------------------|-----------------------|
@@ -31,34 +31,39 @@ SSBD Ontology (OWL DL), exemplar instances and conversion scripts are released u
 | **Core** | `SSBD_dataset` | `has_biosample_information`, `RO:0002180` (→ NGFF) | — |
 | **Added** | `SSBD_OME_NGFF_info` | `has_s3_endpoint`, `has_vizarr_url`, sizes | — |
 | **Added** | `SSBD_biosample_information` | `is_about_organism/strain/cell/anatomy/GO*` | NCBITaxon, CL, UBERON, GO |
-| **Added** | `SSBD_imaging_method_information` | `is_about_imaging_method` | FBbi |
-| **Added** | `SSBD_imaging_instruments` | `has_component` (objective, detector …) | OBI / FBbi |
+| **Added** | `SSBD_imaging_method_information` | `is_about_imaging_method` | FBbi | 
+| **Added** | `SSBD_imaging_instruments` | `has_component` (objective, detector …) |  —  |
 | **Added** | `SSBD_dimension_data` | x/y/z/t scale + unit | IAO / UO |
 
 Seven core entities—Project, Dataset, Biosample, Imaging-Method, Instrument, Dimension and OME-NGFF metadata—form a two-tier model. The repository tier (yellow) ensures instant DOI-based release; the added-value tier (pink) delivers deep, ontology-aligned curation while re-using external OBO vocabularies.
 
-### 1.2 Example lineage (Project 199 – AMATERAS brain‑slice)
+### 1.2 Example instance relationships (Project 199 – AMATERAS brain‑slice)
 
-![](img/P199_ObjectGraph.svg)
+![](img/fig2.svg)
 
-*Project → Dataset → Biosample → OME‑Zarr* relations are encoded by  
-`RO:0002234`, `has_biosample_information`, and `RO:0002180`.
+*Project → Dataset → Biosample → OME‑Zarr* relations 
+Project 199 (Ichimura): A single Dataset, its Biosample and the associated OME-Zarr metadata are connected via RO relations; external strain and organism terms are linked for immediate cross-repository interoperability.
 
 ### 1.3 Sample SPARQL query  
-*(C57BL/6J strain & FIB‑SEM / AMATERAS datasets)*  
-```sparql
 PREFIX ssbdont: <http://ssbd.riken.jp/ontology/>
 PREFIX obo:     <http://purl.obolibrary.org/obo/>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?dataset ?title ?zarr ?vizarr
+SELECT ?dataset ?title ?methodIRI ?label ?zarr ?vizarr
 WHERE {
   ?bs ssbdont:is_about_strain <https://www.jax.org/strain/000664> .
+
   ?dataset ssbdont:has_biosample_information ?bs ;
-           ssbdont:has_dataset_title ?title ;
-           obo:RO_0002180 ?ngff ;
-           ssbdont:has_imaging_method ?mNode .
-  ?mNode ssbdont:is_about_imaging_method ?fbbi .
-  FILTER(?fbbi IN (obo:FBbi_00000327, obo:FBbi_00000246))   # FIB‑SEM / AMATERAS
-  ?ngff ssbdont:has_s3_endpoint ?zarr ;
-        ssbdont:has_vizarr_url  ?vizarr .
+           ssbdont:has_dataset_title         ?title ;
+           obo:RO_0002180                    ?ngff ;
+           ssbdont:has_imaging_method        ?mNode .
+
+  ?mNode ssbdont:is_about_imaging_method ?methodIRI .
+  OPTIONAL { ?methodIRI rdfs:label ?label }
+
+  OPTIONAL { ?ngff ssbdont:has_s3_endpoint ?zarr }
+  OPTIONAL { ?ngff ssbdont:has_vizarr_url  ?vizarr }
 }
+ORDER BY ?methodIRI ?dataset
+
+A single query retrieves all datasets of strain C57BL/6J together with imaging-method ID, OME-Zarr URLs and Vizarr viewer.
