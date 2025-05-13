@@ -45,6 +45,6 @@ Seven core entities—Project, Dataset, Biosample, Imaging-Method, Instrument, D
 Project 199 (Ichimura): A single Dataset, its Biosample and the associated OME-Zarr metadata are connected via RO relations; external strain and organism terms are linked for immediate cross-repository interoperability.
 
 ### 1.3 Sample SPARQL query  
- [`sparql/`](ontology/strain2zar.rq) |
+ [`sparql/`](sparql/strain2zarr.rq) |
 
 A single query retrieves all datasets of strain C57BL/6J together with imaging-method ID, OME-Zarr URLs and Vizarr viewer.
