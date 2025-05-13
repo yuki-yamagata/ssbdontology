@@ -70,4 +70,4 @@ ORDER BY ?methodIRI ?dataset
 ```
  ![](img/fig4.png)
 
-A single query retrieves all datasets of strain C57BL/6J together with imaging-method ID, OME-Zarr URLs and Vizarr viewer.
+A single query retrieves all strain C57BL/6J datasets, together with the imaging-method sub-hierarchical tree, OME-Zarr URLs, and Vizarr viewer.
