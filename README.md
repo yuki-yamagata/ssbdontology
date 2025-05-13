@@ -11,26 +11,31 @@ SSBD Ontology (OWL DL), exemplar instances and conversion scripts are released u
 
 ---
 
-## 1. Quick Overview (EN)
+## 1. Ontology (EN)
 
 | Item | URL / File |
 |------|------------|
 | Core ontology (OWL/RDF‑XML) | [`ontology/ssbd_core.owl`](ontology/ssbd_core.owl) |
 | All individuals (TTL) | [`data/ssbd_instances.ttl`](data/ssbd_instances.ttl) |
-| Lineage diagram (Project 199) | ![](img/P199_ObjectGraph.svg) |
-| Class hierarchy (Cell type, Anatomy, GO, etc.) | `img/` 配下 PNG/SVG |
+| Integrated ontology (OWL/RDF/XML) | [`ontology/ssbd_integrated.owl`](ontology/ssbd_integrated.owl) |
 
-### 1.1 Seven key entity types
+
+
+### 1.1 Core layer:Seven key entity types
+
+![](img/P199_ObjectGraph.svg)
 
 | Layer | Entity class | Typical properties | Linked external vocab |
 |-------|--------------|--------------------|-----------------------|
-| **Repo** | `SSBD_Project` | `has_project_name`, `RO:0002234` (→ Dataset) | — |
-| **Repo** | `SSBD_dataset` | `has_biosample_information`, `RO:0002180` (→ NGFF) | — |
-| **Repo** | `SSBD_OME_NGFF_info` | `has_s3_endpoint`, `has_vizarr_url`, sizes | — |
+| **Core** | `SSBD_Project` | `has_project_name`, `RO:0002234` (→ Dataset) | — |
+| **Core** | `SSBD_dataset` | `has_biosample_information`, `RO:0002180` (→ NGFF) | — |
+| **Added** | `SSBD_OME_NGFF_info` | `has_s3_endpoint`, `has_vizarr_url`, sizes | — |
 | **Added** | `SSBD_biosample_information` | `is_about_organism/strain/cell/anatomy/GO*` | NCBITaxon, CL, UBERON, GO |
 | **Added** | `SSBD_imaging_method_information` | `is_about_imaging_method` | FBbi |
 | **Added** | `SSBD_imaging_instruments` | `has_component` (objective, detector …) | OBI / FBbi |
 | **Added** | `SSBD_dimension_data` | x/y/z/t scale + unit | IAO / UO |
+
+Seven core entities—Project, Dataset, Biosample, Imaging-Method, Instrument, Dimension and OME-NGFF metadata—form a two-tier model. The repository tier (yellow) ensures instant DOI-based release; the added-value tier (pink) delivers deep, ontology-aligned curation while re-using external OBO vocabularies.
 
 ### 1.2 Example lineage (Project 199 – AMATERAS brain‑slice)
 
